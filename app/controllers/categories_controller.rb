@@ -3,26 +3,13 @@ class CategoriesController < ApplicationController
     before_action :authenticate_user!, except: [:index, :show]
     before_action :authorize_admin, only: [:new, :create, :edit, :update, :destroy]
   
-    # def index
-    #   @categories = Category.all
-    #   @user_email = current_user.email if user_signed_in?
-  
-    #   render json: @categories, only: [:name ]
-    # end
-
     def index
-      if Category.table_exists?
-        @categories = Category.all
-        @user_email = current_user.email if user_signed_in?
-        render json: @categories, only: [:name]
-      else
-        render json: { error: 'Categories table does not exist' }, status: :internal_server_error
-      end
-    end
-    
-    
-    
+      @categories = Category.all
+      @user_email = current_user.email if user_signed_in?
   
+      render json: @categories, only: [:name ]
+    end
+
     # GET /categories/1 or /categories/1.json
     def show
     #   @category = Category.find(params[:id])
