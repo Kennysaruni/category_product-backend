@@ -10,17 +10,14 @@ class CategoriesController < ApplicationController
     #   render json: @categories, only: [:name ]
     # end
 
-    def index
-      if Category.table_exists?
-        @categories = Category.all
-        # @user_email = current_user.email if user_signed_in?
-        render json: @categories, only: [:name]
-      else
-        render json: @categories.error, status: :internal_server_error
-      end
-    end
-     
 
+      def index
+        @categories = Category.all
+        render json: @categories, only: [:name]
+      rescue ActiveRecord::StatementInvalid => e
+        render json: { error: e.message }, status: :internal_server_error
+      end
+    
     # GET /categories/1 or /categories/1.json
     def show
     #   @category = Category.find(params[:id])
